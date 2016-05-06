@@ -111,7 +111,6 @@ angular.module('App')
               };
 
               //-TODO implementing the post methode to add the object
-
               $scope.categories.splice(0,0,competeToAdd);
             }
           }
