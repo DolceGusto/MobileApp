@@ -1,5 +1,23 @@
 <ion-view view-title="Comptes">
-  <ion-content>
+  <ion-nav-buttons side="secondary">
+    <buttton class="button icon ion-plus" ng-click="add()">
+    </buttton>
+  </ion-nav-buttons>
 
+  <ion-content>
+      <ion-list   >
+          <ion-item  ng-repeat="compte in comptes"  >
+            <h2>{{compte.solde | number: 2 }} DA</h2>
+            {{compte.designation}}
+            <br/>
+             {{compte.descript}}
+            <ion-option-button class="button-positive" ng-click="edite($index)">
+              Editer
+            </ion-option-button>
+            <ion-option-button class="button-positive" ng-click="delete($index)">
+              Supprimer
+            </ion-option-button>
+          </ion-item>
+      </ion-list>
   </ion-content>
 </ion-view>

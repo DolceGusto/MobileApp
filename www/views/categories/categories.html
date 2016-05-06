@@ -1,5 +1,29 @@
 <ion-view view-title="Categories">
+  <ion-nav-buttons side="secondary">
+    <button class="button icon ion-plus" ng-click="add()"></button>
+  </ion-nav-buttons>
+
   <ion-content>
 
+    <ion-list >
+
+      <ion-item ng-repeat="categorie in categories" >
+
+        <h2>
+          {{categorie.designation}}
+        </h2>
+        <br/>
+        {{categorie.descript}}
+        <ion-option-button class="button-positive" ng-click="edite($index)">
+          Editer
+        </ion-option-button>
+        <ion-option-button class="button-positive" ng-click="delete($index)">
+          Supprimer
+        </ion-option-button>
+      </ion-item>
+
+    </ion-list>
+
   </ion-content>
+
 </ion-view>

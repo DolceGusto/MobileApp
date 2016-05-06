@@ -1,0 +1,25 @@
+<div class="list">
+
+
+  <label class="item item-input">
+    <span class="input-label">
+      Designation
+    </span>
+    <input type="text" maxlength="70" ng-model="popupScope.selectedItem.designation">
+  </label>
+  <label class="item item-input">
+    <span class="input-label">
+      Description
+    </span>
+    <input type="text" maxlength="140" ng-model="popupScope.selectedItem.descript">
+  </label>
+  <label class="item" ng-show="popupScope.invalideDesignation" >
+    <span  class="assertive" >
+      <b>
+        designation non valide
+      </b>
+    </span>
+  </label>
+
+</div>
+

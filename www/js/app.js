@@ -33,7 +33,8 @@ angular.module('App', ['ionic'])
     })
     .state('home.comptes',{
       url:'/comptes',
-      templateUrl:'views/comptes/comptes.html'
+      templateUrl:'views/comptes/comptes.html',
+      controller:'ComptesController'
     })
     .state('home.entrees',{
       url:'/entrees',
@@ -49,7 +50,8 @@ angular.module('App', ['ionic'])
     })
     .state('home.categories',{
       url:'/categories',
-      templateUrl:'views/categories/categories.html'
+      templateUrl:'views/categories/categories.html',
+      controller:'CategoriesController'
     })
     .state('home.budget',{
       url:'/budget',
