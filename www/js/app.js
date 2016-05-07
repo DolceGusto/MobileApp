@@ -48,7 +48,8 @@ angular.module('App', ['ionic'])
     })
     .state('home.transferts',{
       url:'/transferts',
-      templateUrl:'views/transferts/transferts.html'
+      templateUrl:'views/transferts/transferts.html',
+      controller:'TransfertsController'
     })
     .state('home.categories',{
       url:'/categories',

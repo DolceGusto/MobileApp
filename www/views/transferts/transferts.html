@@ -1,5 +1,31 @@
 <ion-view view-title="Transferts">
+  <ion-nav-buttons side="secondary">
+    <button class="button icon ion-plus" ng-click="add()"></button>
+  </ion-nav-buttons>
+  <div class="bar bar-positive bar-subheader row">
+    <div class="col">De</div>
+    <div class="col">Vers</div>
+    <div class="col">Montant</div>
+    <div class="col">Date</div>
+  </div>
   <ion-content>
+
+    <ion-list>
+      <ion-item class="row-tab-no-padding" ng-repeat="transfert in transferts">
+        <div class="row">
+          <div class="col">{{getDesignationCompte(transfert.idCompteExpediteur)}}</div>
+          <div class="col">{{getDesignationCompte(transfert.idCompteRecepteur)}}</div>
+          <div class="col">{{transfert.montant}}</div>
+          <div class="col">{{transfert.dateCreation | date: 'dd/MM/yyyy'}}</div>
+        </div>
+        <ion-option-button class="button button-positive" ng-click="edite($index)">
+          Editer
+        </ion-option-button>
+        <ion-option-button class="button button-positive" ng-click="delete($index)">
+          Supprimer
+        </ion-option-button>
+      </ion-item>
+    </ion-list>
 
   </ion-content>
 </ion-view>
