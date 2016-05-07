@@ -16,30 +16,39 @@ angular.module('App')
         new LineChartDataItem(new Date('2016-05-010'),250.00),
         new LineChartDataItem(new Date('2016-05-010'),50.23)
     ];
-    
-    var getSerieFromLineChartDataSet = function(lineChartDataSet){
-        
+
+    var lineChartDataSetEntree = [
+        new LineChartDataItem(new Date('2016-05-08'),200),
+        new LineChartDataItem(new Date('2016-05-09'),300.55),
+        new LineChartDataItem(new Date('2016-05-010'),50.00),
+        new LineChartDataItem(new Date('2016-05-010'),100.23)
+    ];
+
+    var getSerieFromLineChartDataSet = function(lineChartDataSet,serieName){
+
         var serie = {
+            name:serieName,
             data: []
         };
         /*
-        *  data = [ 
+        *  data = [
         *           [date1,val1],
         *            ..........
         *           [dateN,valN]
         *              ]
         * */
         for(var i = 0 ; i < lineChartDataSet.length ; i ++){
-            
+
             if(lineChartDataSet[i].date && lineChartDataSet[i].value > 0){// les deux sont valides
                 serie.data.push([lineChartDataSet[i].date.getTime(),lineChartDataSet[i].value]);
-            }  
+            }
         }
         return serie ;
     };
-    
+
     return{
         lineChartDataSetDepense: lineChartDataSetDepense,
+        lineChartDataSetEntree : lineChartDataSetEntree,
         getSerieFromLineChartDataSet: getSerieFromLineChartDataSet
     };
 

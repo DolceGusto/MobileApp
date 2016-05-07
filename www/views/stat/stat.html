@@ -6,15 +6,10 @@
         <div class="input-label">
           Transaction
         </div>
-        <select ng-change="changeChart()" ng-model="selectedChart" >
-          <option ng-repeat="chartType in chartTypes "
-                  value="{{$index}}" ng-selected="$index === selectedChartq">
-            {{chartType}}
-          </option>
+        <select  size="1" ng-model="selectedChart.nom" ng-options="chartType for chartType in chartTypes" >
         </select>
       </label>
     </div>
-
 
     <highchart config="chart"></highchart>
 

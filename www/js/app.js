@@ -24,7 +24,7 @@ angular.module('App', ['ionic','highcharts-ng'])
       }
     })
     .state('home.dashboard.stat',{
-      url:'/stat/:chartTypeIndex',
+      url:'/stat',
       views:{
         'stat-tab' : {
           templateUrl:'views/stat/stat.html',

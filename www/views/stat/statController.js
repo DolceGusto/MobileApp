@@ -1,13 +1,36 @@
 angular.module('App')
-.controller('StatController',function($scope,$stateParams,$state,StatService){
-   
-    $scope.chartTypes = ['depenses','entrees','depenses vs entrees'];
+.controller('StatController',function($scope,StatService){
 
-    $scope.selectedChart = $stateParams.chartTypeIndex || 0;
+    $scope.chartTypes = ['Depenses','Entrees','Entrees VS Depenses'];
 
-    $scope.changeChart = function () {
-        $state.go('home.dashboard.stat',{chartTypeIndex : $scope.selectedChart});
-    }
+    $scope.selectedChart = {
+      nom: $scope.chartTypes[0]
+    };
+
+
+    $scope.$watch('selectedChart.nom',function(newVal,oldVal){
+
+        $scope.changeChart(newVal);
+    });
+
+
+
+    Highcharts.theme = {
+        colors: [],
+        legend: {
+            itemStyle: {
+                font: '9pt Trebuchet MS, Verdana, sans-serif',
+                color: 'black'
+            },
+            itemHoverStyle: {
+                color: 'gray'
+            }
+        },
+        lang: {
+            decimalPoint: ',',
+            thousandsSep: ' '
+        }
+    };
 
     $scope.chart = {
         options: {
@@ -15,14 +38,15 @@ angular.module('App')
                 type:'line'
             },
             legend:{
-                enabled: false
+                enabled: true
             }
         },
         title:{
             text:null
         },
         yAxis:{
-            title:null
+            title:'Montant (DA)',
+
         },
         xAxis:{
             type:'datetime'
@@ -30,12 +54,31 @@ angular.module('App')
         series:[] /*data to define */
     };
 
-    //--TODO getting data from the backend
-    $scope.chart.series.push(StatService.getSerieFromLineChartDataSet(StatService.lineChartDataSetDepense));
+    $scope.changeChart = function (charteType){
 
-    
-    $scope.$on('$ionicView.enter', function() {
-        $scope.selectedChart = $stateParams.chartTypeIndex || 0;
-    });
-    
+
+      //--TODO getting data from the backend
+      if(charteType == 'Depenses' ){
+
+        Highcharts.theme.colors = ['#ff0000'];
+        Highcharts.setOptions(Highcharts.theme);
+        $scope.chart.series=[];
+        $scope.chart.series.push(StatService.getSerieFromLineChartDataSet(StatService.lineChartDataSetDepense,'Depenses'));
+
+      }else if(charteType == 'Entrees'){
+
+        Highcharts.theme.colors = ['#0000ff'];
+        Highcharts.setOptions(Highcharts.theme);
+        $scope.chart.series=[];
+        $scope.chart.series.push(StatService.getSerieFromLineChartDataSet(StatService.lineChartDataSetEntree,'Entrees'));
+
+      }else if(charteType == 'Entrees VS Depenses'){
+
+        Highcharts.theme.colors = ['#ff0000','#0000ff'];
+        $scope.chart.series=[];
+        $scope.chart.series.push(StatService.getSerieFromLineChartDataSet(StatService.lineChartDataSetDepense,'Depenses'));
+        $scope.chart.series.push(StatService.getSerieFromLineChartDataSet(StatService.lineChartDataSetEntree,'Entrees'));
+      }
+    }
+
 });
