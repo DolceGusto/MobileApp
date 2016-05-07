@@ -1,0 +1,30 @@
+<div class="list">
+
+  <label  class="item item-input item-select">
+    <div class="input-label">
+      Compte
+    </div>
+    <select size="1" ng-model="popupScope.selectedItem.idCompte"
+            ng-options="compte.id as compte.designation for compte in comptes"
+            required="required">
+    </select>
+  </label>
+  <label class="item item-input item-select">
+    <div class="input-label">
+      Categorie
+    </div>
+    <select size="1" ng-model="popupScope.selectedItem.idCategorie"
+            ng-options="categorie.id as categorie.designation for categorie in categories">
+    </select>
+  </label>
+  <label class="item item-input">
+    <input type="number"  placeholder="Montant" ng-model="popupScope.selectedItem.montant">
+  </label>
+  <label class="item item-input ">
+    <input type="date"   ng-model="popupScope.selectedItem.dateCreation" >
+  </label>
+  <label class="item item-input ">
+    <input type="text" placeholder="Designation" ng-model="popupScope.selectedItem.designation">
+  </label>
+
+</div>

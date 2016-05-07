@@ -4,10 +4,7 @@ angular.module('App')
   $scope.comptes = ComptesService.comptes ;
 
   $scope.popupScope= {
-    selectedItem :{
-      designation:'',
-      descript:''
-    },
+    selectedItem : ComptesService.getAnInstance('','','','',''),
     invalideDesignation:false
   };
 
@@ -37,8 +34,8 @@ angular.module('App')
   $scope.edite = function(index){
 
     var itemToEdit = $scope.comptes[index];
-    $scope.popupScope.selectedItem.designation  = itemToEdit.designation;
-    $scope.popupScope.selectedItem.descript = itemToEdit.descript;
+    ComptesService.clone($scope.popupScope.selectedItem,itemToEdit);
+
 
     var editePopup = $ionicPopup.show({
 
@@ -64,8 +61,8 @@ angular.module('App')
 
               //-TODO  implemeting the http put call
               /*editing the item*/
-              itemToEdit.designation = $scope.popupScope.selectedItem.designation;
-              itemToEdit.descript = $scope.popupScope.selectedItem.descript;
+              ComptesService.clone(itemToEdit,$scope.popupScope.selectedItem);
+
 
             }}
         }
@@ -76,8 +73,7 @@ angular.module('App')
 
   $scope.add = function(){
 
-    $scope.popupScope.selectedItem.descript = '';
-    $scope.popupScope.selectedItem.designation = '';
+    $scope.popupScope.selectedItem = ComptesService.getAnInstance('','','','','');
     $scope.popupScope.invalideDesignation = false ;
 
     var addPopup = $ionicPopup.show({
@@ -101,13 +97,10 @@ angular.module('App')
               $scope.popupScope.invalideDesignation = false;
 
               //-TODO formatting the new object to add
-              var competeToAdd = {
-                id:'',
-                idUtilisateur:'',
-                solde:0,
-                designation: $scope.popupScope.selectedItem.designation,
-                descript: $scope.popupScope.selectedItem.descript
-              };
+
+              var competeToAdd = ComptesService.getAnInstance('','',0,
+                                  $scope.popupScope.selectedItem.designation,
+                                  $scope.popupScope.selectedItem.descript);
 
               //-TODO implementing the post methode to add the object
 

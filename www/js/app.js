@@ -38,11 +38,13 @@ angular.module('App', ['ionic'])
     })
     .state('home.entrees',{
       url:'/entrees',
-      templateUrl:'views/entrees/entrees.html'
+      templateUrl:'views/transactions/entrees/entrees.html',
+      controller:'EntreesController'
     })
     .state('home.depenses',{
       url:'/depenses',
-      templateUrl:'views/depenses/depenses.html'
+      templateUrl:'views/transactions/depenses/depenses.html',
+      controller:'DepensesController'
     })
     .state('home.transferts',{
       url:'/transferts',

@@ -1,6 +1,5 @@
 <div class="list">
 
-
   <label class="item item-input ">
     <input type="text" maxlength="70" placeholder="Designation" ng-model="popupScope.selectedItem.designation">
   </label>
@@ -8,9 +7,10 @@
     <input type="text" maxlength="140" placeholder="Description" ng-model="popupScope.selectedItem.descript">
   </label>
 </div>
-<dive class="assertive"  item-stacked-label ng-show="popupScope.invalideDesignation" >
+<dive class="assertive"  item-stacked-label ng-hide="! popupScope.invalideDesignation" >
   <b>
     designation non valide
   </b>
+
 </dive>
 
