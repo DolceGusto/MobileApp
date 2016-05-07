@@ -1,5 +1,22 @@
 <ion-view view-title="Statistique">
   <ion-content>
 
+    <div class="list list-inset">
+      <label class="item item-input item-select">
+        <div class="input-label">
+          Transaction
+        </div>
+        <select ng-change="changeChart()" ng-model="selectedChart" >
+          <option ng-repeat="chartType in chartTypes "
+                  value="{{$index}}" ng-selected="$index === selectedChartq">
+            {{chartType}}
+          </option>
+        </select>
+      </label>
+    </div>
+
+
+    <highchart config="chart"></highchart>
+
   </ion-content>
 </ion-view>

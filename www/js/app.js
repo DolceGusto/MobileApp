@@ -1,4 +1,4 @@
-angular.module('App', ['ionic'])
+angular.module('App', ['ionic','highcharts-ng'])
 .config(function($urlRouterProvider,$stateProvider){
 
   $stateProvider
@@ -24,10 +24,11 @@ angular.module('App', ['ionic'])
       }
     })
     .state('home.dashboard.stat',{
-      url:'/stat',
+      url:'/stat/:chartTypeIndex',
       views:{
         'stat-tab' : {
-          templateUrl:'views/stat/stat.html'
+          templateUrl:'views/stat/stat.html',
+          controller:'StatController'
         }
       }
     })
