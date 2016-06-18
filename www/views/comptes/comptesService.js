@@ -1,6 +1,8 @@
 angular.module('App')
-.service('ComptesService',function(){
+.service('ComptesService',function($http){
 
+  //var urlServer = "http://192.168.56.1:1949";
+  var urlServer = "http://localhost:1949/";
 
   function Compte(id,idUtilisateur,solde,designation,descript){
 
@@ -25,17 +27,13 @@ angular.module('App')
     compteCible.descript = compteTemplate.descript;
   }
 
-  var data = [
-                new Compte(1,1,10000,'espece','mon compte espece'),
-                new Compte(2,1,10000,'banque','mon compte en banque'),
-                new Compte(3,1,10000,'poste','mon compte ccp')
-              ];
+  var data ;
 
   var getDesignationCompte = function(idCompte){
 
-    for(var i = 0 ; i < data.length ; i ++){
-      if(data[i].id == idCompte ){
-        return data[i].designation;
+    for(var i = 0 ; i < this.comptes.length ; i ++){
+      if(this.comptes[i].id == idCompte ){
+        return this.comptes[i].designation;
       }
     }
     //-TODO search in the remote backend
@@ -43,20 +41,62 @@ angular.module('App')
   };
 
   var getIdCompte = function(designation){
-    for(var i  = 0 ; i< data.length ;i++){
-      if(data[i].designation === designation){
-        return data[i].id ;
+    for(var i  = 0 ; i< this.comptes.length ;i++){
+      if(this.comptes[i].designation === designation){
+        return this.comptes[i].id ;
       }
     }
     return null;
   };
 
+  var updateData = function(userId){
+
+    $http.get( urlServer+"api/Compte/getAccountsOneUser/"+userId )
+      .success(function(response){
+        console.log(response);
+        data = response;
+      });
+  };
+
+
+  var getComptesOneUser = function (userId){
+
+    return $http.get(urlServer+"api/Compte/getAccountsOneUser/"+userId) ;
+  };
+
+  var deleteById = function (compteId){
+
+    return $http.delete(urlServer+"api/Compte/deleteAccount/"+compteId);
+  };
+
+  var updateCompte = function (compte) {
+    return $http.put(urlServer+"api/Compte/updateAccount/"+compte.id,compte);
+  };
+
+  var addCompte = function(compte){
+    return $http.post(urlServer+"api/Compte/addAccount",compte);
+  };
+
+  var isValideSolde = function(solde){
+
+    return (!isNaN(solde) && solde  >= 0) || solde == "" ;
+  };
+
+
+
   return{
-    comptes: data,
+
+    comptes: [],
+    updateData: updateData,
     getDesignationCompte: getDesignationCompte,
     getIdCompte : getIdCompte,
     getAnInstance : getAnInstanceOfCompte,
-    clone : cloneCompte
+    clone : cloneCompte,
+    getCompteOneUser: getComptesOneUser,
+    deleteById: deleteById,
+    updateCompte: updateCompte,
+    addCompte: addCompte,
+    isValideSolde: isValideSolde
   };
 
 })

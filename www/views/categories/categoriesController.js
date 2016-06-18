@@ -1,12 +1,27 @@
 angular.module('App')
 .controller('CategoriesController',function($scope,$ionicPopup,CategoriesService){
 
-  $scope.categories = CategoriesService.categories;
-  $scope.popupScope = {
+  var porteFeuilleId = 1 ;
 
+  console.log("entré dans categorie controller ");
+
+  CategoriesService.getCategorieOnePorteFeuille(porteFeuilleId)
+    .success(function(categories){
+
+      CategoriesService.categories = categories;
+      $scope.categories = CategoriesService.categories;
+
+    })
+    .error(function(error){
+      console.log("getCategorieOnePorteFeuille error");
+      console.log(error);
+  });
+
+
+
+  $scope.popupScope = {
     selectedItem: CategoriesService.getAnInstance('','','',''),
     invalideDesignation:false
-
   };
 
   $scope.delete = function(index) {
@@ -24,7 +39,18 @@ angular.module('App')
       deletePopup.then(function (res) {
         if (res) {
           //-TODO implementing the http delete call
-          $scope.categories.splice(index, 1);
+          CategoriesService.deleteById(itemToDelete.id)
+            .success(function(response){
+
+              $scope.categories.splice(index, 1);
+              console.log("delete categorie ok");
+              console.log(response);
+            })
+            .error(function(error){
+              console.log("delete categorie error");
+              console.log(error);
+            });
+
         } else {
           //canceling the operation
         }
@@ -61,8 +87,17 @@ angular.module('App')
               $scope.popupScope.invalideDesignation = false;
 
               //-TODO  implemeting the http put call
+              CategoriesService.updateCategorie($scope.popupScope.selectedItem)
+                .success(function(response){
+                  console.log("update catégorie ok");
+                  CategoriesService.clone(itemToEdit,$scope.popupScope.selectedItem);
+                })
+                .error(function(response){
+                  console.log("update catégorie error");
+                  console.log(response);
+                });
               /*editing the item*/
-              CategoriesService.clone(itemToEdit,$scope.popupScope.selectedItem);
+
             }}
         }
       ]
@@ -95,14 +130,29 @@ angular.module('App')
 
               $scope.popupScope.invalideDesignation = false;
 
-              //-TODO formatting the new object to add
-
-              var competeToAdd = CategoriesService.getAnInstance('','',
+              // formatting the new object to add
+              var categorieToAdd = CategoriesService.getAnInstance('',porteFeuilleId,
                                   $scope.popupScope.selectedItem.designation,
                                   $scope.popupScope.selectedItem.descript);
 
-              //-TODO implementing the post methode to add the object
-              $scope.categories.splice(0,0,competeToAdd);
+              CategoriesService.addCategorie(categorieToAdd)
+                .then(function(response){
+
+                  console.log("add categorie ok");
+                  console.log(response);
+                  var locationStringArray = response.headers("Location").split("/");
+                  var locationInt = locationStringArray[locationStringArray.length - 1 ];
+                  categorieToAdd.id = locationInt;
+                  $scope.categories.splice(0,0,categorieToAdd);
+
+
+                },function(error){
+
+                  console.log("add categorie error");
+                  console.log(error);
+
+                });
+
             }
           }
         }

@@ -1,5 +1,8 @@
 angular.module('App')
-.service('TransfertsService',function(){
+.service('TransfertsService',function($http){
+
+  //var urlServer = "http://192.168.56.1:1949";
+  var urlServer = "http://localhost:1949/";
 
   function Transfert(id,idCompteExpediteur,idCompteRecepteur,montant,dateCreation,designation){
 
@@ -25,19 +28,34 @@ angular.module('App')
     transfertCible.designation = transfertTemplate.designation;
   };
 
-  var data  = [
 
-    new Transfert(1,1,2,150,new Date('2016-05-08'),'transfert #1'),
-    new Transfert(1,2,1,250,new Date('2016-05-07'),'transfert #2'),
-    new Transfert(1,1,3,350,new Date('2016-05-06'),'transfert #3')
-  ];
+  var getTransfertOneUser = function(userId){
+    return $http.get(urlServer+"/api/Transfert/getByIdUser/"+userId);
+  };
+
+
+  var updateTransfert = function(transfert){
+    return $http.put(urlServer+"/api/Transfert/update",transfert);
+  };
+
+  var deleteById = function(id){
+    return $http.delete(urlServer+"/api/Transfert/delete/"+id);
+  };
+
+  var addTransfert = function(transfert){
+    return $http.post(urlServer+"/api/Transfert/add",transfert);
+  };
 
 
 
   return {
-    transferts : data,
+    transferts : [],
     getInstance : getInstanceOfTransfert,
-    clone : cloneTransfert
+    clone : cloneTransfert,
+    getTransfertOneUser:getTransfertOneUser,
+    updateTransfert: updateTransfert,
+    deletById:deleteById,
+    addTransfert:addTransfert
   };
 
 });

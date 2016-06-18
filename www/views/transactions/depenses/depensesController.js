@@ -1,9 +1,42 @@
 angular.module('App')
 .controller('DepensesController',function($scope,$ionicPopup,DepensesService,CategoriesService,ComptesService){
 
-  $scope.depenses = DepensesService.depenses;
-  $scope.categories = CategoriesService.categories;
-  $scope.comptes = ComptesService.comptes;
+
+  var userId = 2;
+  var porteFeuilleId = 1;
+
+  DepensesService.getDepenseOneUser(userId)
+    .success(function(depenses){
+
+      DepensesService.depenses = depenses;
+
+      CategoriesService.getCategorieOnePorteFeuille(porteFeuilleId)
+        .success(function(categories){
+
+          CategoriesService.categories = categories;
+
+          ComptesService.getCompteOneUser(userId)
+            .success(function(comptes){
+
+              ComptesService.comptes = comptes ;
+
+              $scope.depenses = DepensesService.depenses;
+              $scope.categories = CategoriesService.categories;
+              $scope.comptes = ComptesService.comptes;
+
+              console.log($scope.depenses);
+              console.log($scope.categories);
+              console.log($scope.comptes);
+
+              $scope.getDesignationCategorie = CategoriesService.getDesignationCategorie ;
+              $scope.getDesignationCompte = ComptesService.getDesignationCompte;
+
+              console.log("initialisation des depenses, comptes, catégories ok");
+            });
+        });
+    });
+
+
 
   $scope.popupScope = {
     selectedItem: DepensesService.getAnInstance('','','','','','')
@@ -41,7 +74,23 @@ angular.module('App')
                                 $scope.popupScope.selectedItem.designation);
 
               //--TODO add http post methode
-              $scope.depenses.splice(0,0,depense);
+              DepensesService.addDepense(depense)
+                .then(function(response){
+
+                  console.log("addDepesne ok");
+
+                  var locationStringArray = response.headers("Location").split("/");
+                  var locationInt = locationStringArray[locationStringArray.length - 2 ];
+                  depense.id = locationInt;
+
+                  $scope.depenses.splice(0,0,depense);
+                  console.log(response);
+
+                },function(error){
+                  console.log("addDepense error");
+                  console.log(error);
+                });
+
             }else{
               e.preventDefault();
             }
@@ -80,9 +129,16 @@ angular.module('App')
               $scope.popupScope.selectedItem.dateCreation){
               /*the item is valide*/
 
-              DepensesService.clone(itemToEdite,$scope.popupScope.selectedItem);
-
               //--TODO add http post methode
+              DepensesService.updateDepense($scope.popupScope.selectedItem)
+                .success(function(response){
+
+                  console.log("update depense ok");
+                  DepensesService.clone(itemToEdite,$scope.popupScope.selectedItem);
+                })
+                .error(function(error){
+                  console.log("update depense error ");
+                });
 
             }else{
               e.preventDefault();
@@ -110,7 +166,18 @@ angular.module('App')
     deletePopup.then(function(res){
       if(res){
         //-TODO implementing the http delete call
-        $scope.depenses.splice(index,1);
+        DepensesService.deleteById(itemToDelete.id,itemToDelete.idCompte)
+          .success(function(response){
+
+            console.log("delete depense ok");
+            $scope.depenses.splice(index,1);
+
+          }).error(function(error){
+
+            console.log("delete depense error");
+            console.log(error);
+        });
+
       }else{
         //canceling the operation
       }
@@ -118,10 +185,5 @@ angular.module('App')
     });
 
   };
-
-  $scope.getDesignationCategorie= CategoriesService.getDesignationCategorie ;
-  $scope.getDesignationCompte = ComptesService.getDesignationCompte;
- 
-
 
 });

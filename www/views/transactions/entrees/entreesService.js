@@ -1,5 +1,9 @@
 angular.module('App')
-  .service('EntreesService',function(){
+  .service('EntreesService',function($http){
+
+
+    //var urlServer = "http://192.168.56.1:1949";
+    var urlServer = "http://localhost:1949/";
 
     function Entree(id,idCompte,idCategorie,montant,dateCration,designation){
 
@@ -26,16 +30,30 @@ angular.module('App')
       EntreeCible.designation = entreeTemplate.designation;
     };
 
-    var data = [
-      new Entree(1,1,1,100,new Date('2016-05-06'),'Entree #1'),
-      new Entree(2,1,1,100,new Date('2016-05-07'),'Entree #2'),
-      new Entree(3,1,1,100,new Date('2016-05-08'),'Entree #3')
-    ];
+    var getEntreesOneUser = function (userid){
+      return $http.get(urlServer+"/api/Transaction/getTransactEntreesOneUser/"+userid);
+    };
+
+    var updateEntree = function(entree){
+      return $http.put(urlServer+"/api/Transaction/updateTransaction/"+entree.id+"/"+entree.idCompte,entree);
+    };
+
+    var deleteById = function(idEntree,idCompte){
+      return $http.delete(urlServer+"/api/Transaction/deleteTransaction/"+idEntree+"/"+idCompte);
+    };
+
+    var addEntree = function(entree){
+      return $http.post(urlServer+"/api/Transaction/addTransaction",entree);
+    };
 
     return {
-      entrees: data,
+      entrees: [],
       getAnInstance : getAnInstanceOfEntree,
-      clone : cloneEntree
+      clone : cloneEntree,
+      getEntreesOneUser: getEntreesOneUser,
+      updateEntree: updateEntree,
+      deleteById: deleteById,
+      addEntree: addEntree
     };
 
 

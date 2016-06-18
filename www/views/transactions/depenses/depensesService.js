@@ -1,5 +1,9 @@
 angular.module('App')
-.service('DepensesService',function(){
+.service('DepensesService',function($http){
+
+  //var urlServer = "http://192.168.56.1:1949";
+    var urlServer = "http://localhost:1949/";
+
 
   function Depense(id,idCompte,idCategorie,montant,dateCration,designation){
 
@@ -26,16 +30,32 @@ angular.module('App')
       depenseCible.designation = depenseTemplate.designation;
   };
 
-  var data = [
-              new Depense(1,1,1,100,new Date('2016-05-06'),'depense #1'),
-              new Depense(2,1,1,100,new Date('2016-05-07'),'depense #2'),
-              new Depense(3,1,1,100,new Date('2016-05-08'),'depense #3')
-            ];
+
+
+  var getDepenseOneUser = function (userid){
+    return $http.get(urlServer+"/api/Transaction/getTransactDepensesOneUser/"+userid);
+  };
+
+  var updateDepense = function(depense){
+    return $http.put(urlServer+"/api/Transaction/updateTransaction/"+depense.id+"/"+depense.idCompte,depense);
+  };
+
+  var deleteById = function(idDepense,idCompte){
+    return $http.delete(urlServer+"/api/Transaction/deleteTransaction/"+idDepense+"/"+idCompte);
+  };
+
+  var addDepense = function(depense){
+    return $http.post(urlServer+"/api/Transaction/addTransaction",depense);
+  };
 
   return {
-    depenses: data,
+    depenses: [],
     getAnInstance : getAnInstanceOfDepense,
-    clone : cloneDepense
+    clone : cloneDepense,
+    getDepenseOneUser : getDepenseOneUser,
+    updateDepense: updateDepense,
+    deleteById: deleteById,
+    addDepense: addDepense
   };
 
 

@@ -7,10 +7,18 @@
   <label class="item item-input ">
     <input type="text" maxlength="140" placeholder="Description" ng-model="popupScope.selectedItem.descript">
   </label>
+  <label class="item item-input ">
+    <input type="number"  placeholder="Solde" ng-model="popupScope.selectedItem.solde">
+  </label>
 </div>
 <dive class="assertive"  item-stacked-label ng-show="popupScope.invalideDesignation" >
   <b>
     designation non valide
+  </b>
+</dive>
+<dive class="assertive"  item-stacked-label ng-show="popupScope.invalideSolde" >
+  <b>
+    solde non valide
   </b>
 </dive>
 

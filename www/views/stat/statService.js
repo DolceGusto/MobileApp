@@ -7,23 +7,36 @@ angular.module('App')
         this.value = value;
     };
 
-
+    
 
     //--TODO getting data from the backend
-    var lineChartDataSetDepense = [
+    var lineChartDataSetDepense = []; /*[
         new LineChartDataItem(new Date('2016-05-08'),100.25),
         new LineChartDataItem(new Date('2016-05-09'),150.55),
         new LineChartDataItem(new Date('2016-05-010'),250.00),
         new LineChartDataItem(new Date('2016-05-010'),50.23)
-    ];
+    ];*/
 
-    var lineChartDataSetEntree = [
+    var lineChartDataSetEntree = [] ; /* [
         new LineChartDataItem(new Date('2016-05-08'),200),
         new LineChartDataItem(new Date('2016-05-09'),300.55),
         new LineChartDataItem(new Date('2016-05-010'),50.00),
         new LineChartDataItem(new Date('2016-05-010'),100.23)
-    ];
-
+    ];*/
+  
+    
+    
+    var formateTransactionToLineDataSetEntree = function(transactions){
+      
+      var dataSet = [];
+      for(var i = 0 ; i < transactions.length ; i++ ){
+       
+        dataSet[i] = new LineChartDataItem(new Date(transactions[i].dateCreation),transactions[i].montant);
+      }
+      return dataSet;
+      
+    };
+  
     var getSerieFromLineChartDataSet = function(lineChartDataSet,serieName){
 
         var serie = {
@@ -47,6 +60,7 @@ angular.module('App')
     };
 
     return{
+        formateTransactionsToLineChartDataSetEntree: formateTransactionToLineDataSetEntree,
         lineChartDataSetDepense: lineChartDataSetDepense,
         lineChartDataSetEntree : lineChartDataSetEntree,
         getSerieFromLineChartDataSet: getSerieFromLineChartDataSet

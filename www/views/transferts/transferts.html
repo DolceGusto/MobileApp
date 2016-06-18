@@ -1,14 +1,17 @@
 <ion-view view-title="Transferts">
+
   <ion-nav-buttons side="secondary">
     <button class="button icon ion-plus" ng-click="add()"></button>
   </ion-nav-buttons>
-  <div class="bar bar-positive bar-subheader row">
+
+  <div class="bar bar-subheader  row bar-positive">
     <div class="col">De</div>
     <div class="col">Vers</div>
     <div class="col">Montant</div>
     <div class="col">Date</div>
   </div>
-  <ion-content>
+
+  <ion-content class="has-subheader">
 
     <ion-list>
       <ion-item class="row-tab-no-padding" ng-repeat="transfert in transferts">

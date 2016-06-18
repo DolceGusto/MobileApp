@@ -1,9 +1,26 @@
 angular.module('App')
 .controller('TransfertsController',function($scope,TransfertsService,ComptesService,$ionicPopup){
 
-  $scope.transferts = TransfertsService.transferts;
-  $scope.getDesignationCompte = ComptesService.getDesignationCompte;
-  $scope.comptes = ComptesService.comptes;
+  var userId = 2;
+
+  TransfertsService.getTransfertOneUser(userId)
+    .success(function(transferts){
+
+      TransfertsService.transferts = transferts;
+      ComptesService.getCompteOneUser(userId)
+        .success(function(comptes){
+
+          ComptesService.comptes = comptes;
+
+          $scope.transferts = TransfertsService.transferts;
+          $scope.comptes = ComptesService.comptes;
+          $scope.getDesignationCompte = ComptesService.getDesignationCompte;
+          
+          console.log("initialisation des transferts,comptes ok");
+        });
+    });
+
+
 
   $scope.popupScope = {
     selectedItem: TransfertsService.getInstance('','','','','','')
@@ -33,8 +50,30 @@ angular.module('App')
               $scope.popupScope.selectedItem.dateCreation &&
               $scope.popupScope.selectedItem.designation){
 
+              var transfert = TransfertsService.getInstance("",
+                                                $scope.popupScope.selectedItem.idCompteExpediteur,
+                                                $scope.popupScope.selectedItem.idCompteRecepteur,
+                                                $scope.popupScope.selectedItem.montant,
+                                                $scope.popupScope.selectedItem.dateCreation,
+                                                $scope.popupScope.selectedItem.designation);
+
               //--TODO implementation of an http post call
-              $scope.transferts.splice(0,0,$scope.popupScope.selectedItem);
+              TransfertsService.addTransfert(transfert)
+                .then(function (response) {
+
+                  console.log("add transfert ok");
+
+                  var locationStringArray = response.headers("Location").split("/");
+                  var locationInt = locationStringArray[locationStringArray.length - 1 ];
+                  transfert.id = locationInt;
+
+                  $scope.transferts.splice(0,0,transfert);
+
+
+                },function (error) {
+                  console.log("add transfert error ");
+                  console.log(error);
+                });
 
             }else{
               e.preventDefault();
@@ -62,7 +101,17 @@ angular.module('App')
 
       if(res){
         //--TODO implement the delete Http request
-        $scope.transferts.splice(index,1);
+        TransfertsService.deletById(itemToDelete.id)
+          .success(function(response){
+            console.log("delete transfert ok");
+            $scope.transferts.splice(index,1);
+          })
+          .error(function(error){
+            console.log("delete transfert error");
+            console.log(error);
+          });
+
+
       }else{
         // canceling the operation
       }
@@ -97,7 +146,17 @@ angular.module('App')
               $scope.popupScope.selectedItem.designation){
 
               //--TODO implementation of an http put call
-              TransfertsService.clone(itemToEdite,$scope.popupScope.selectedItem);
+              TransfertsService.updateTransfert($scope.popupScope.selectedItem)
+                .success(function(response){
+                  console.log("update transfert ok");
+                  TransfertsService.clone(itemToEdite,$scope.popupScope.selectedItem);
+                })
+                .error(function(error){
+                  console.log("update transfert error");
+                  console.log(error);
+                });
+
+
 
             }else{
               e.preventDefault();
