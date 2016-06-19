@@ -1,7 +1,7 @@
 angular.module('App')
-.controller('TransfertsController',function($scope,TransfertsService,ComptesService,$ionicPopup){
+.controller('TransfertsController',function($scope,TransfertsService,ComptesService,$ionicPopup,loginService){
 
-  var userId = 2;
+  var userId = loginService.currentAppUser.id;
 
   TransfertsService.getTransfertOneUser(userId)
     .success(function(transferts){
@@ -15,7 +15,7 @@ angular.module('App')
           $scope.transferts = TransfertsService.transferts;
           $scope.comptes = ComptesService.comptes;
           $scope.getDesignationCompte = ComptesService.getDesignationCompte;
-          
+
           console.log("initialisation des transferts,comptes ok");
         });
     });

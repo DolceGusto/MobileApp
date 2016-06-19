@@ -1,9 +1,9 @@
 angular.module('App')
-.controller('DepensesController',function($scope,$ionicPopup,DepensesService,CategoriesService,ComptesService){
+.controller('DepensesController',function($scope,$ionicPopup,DepensesService,CategoriesService,ComptesService,loginService){
 
 
-  var userId = 2;
-  var porteFeuilleId = 1;
+  var userId = loginService.currentAppUser.id;
+  var porteFeuilleId = loginService.currentAppUser.idPorteFeuille;
 
   DepensesService.getDepenseOneUser(userId)
     .success(function(depenses){

@@ -1,10 +1,15 @@
-angular.module('App', ['ionic','highcharts-ng'])
-.config(function($urlRouterProvider,$stateProvider){
+angular.module('App', ['ionic','highcharts-ng','ngFacebook'])
+.config(function($urlRouterProvider,$stateProvider,$facebookProvider){
+
+
+  $facebookProvider.setAppId('572159069627757');
+  $facebookProvider.setPermissions('public_profile,email,user_friends');
 
   $stateProvider
     .state('login',{
     url:'/login',
-    templateUrl:'views/login/login.html'
+    templateUrl:'views/login/login.html',
+    controller:'loginController'
   })
     .state('home',{
       url:'/home',
@@ -19,7 +24,8 @@ angular.module('App', ['ionic','highcharts-ng'])
       url:'/profile',
       views:{
         'profile-tab':{
-          templateUrl:'views/profile/profile.html'
+          templateUrl:'views/profile/profile.html',
+          controller: 'profileController'
         }
       }
     })
@@ -66,6 +72,15 @@ angular.module('App', ['ionic','highcharts-ng'])
   $urlRouterProvider.otherwise('/login');
 })
 .run(function($ionicPlatform) {
+
+  (function(d, s, id) {
+    var js, fjs = d.getElementsByTagName(s)[0];
+    if (d.getElementById(id)) return;
+    js = d.createElement(s); js.id = id;
+    js.src = "//connect.facebook.net/en_US/sdk.js";
+    fjs.parentNode.insertBefore(js, fjs);
+  }(document, 'script', 'facebook-jssdk'));
+
   $ionicPlatform.ready(function() {
     if(window.cordova && window.cordova.plugins.Keyboard) {
       cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
@@ -74,4 +89,4 @@ angular.module('App', ['ionic','highcharts-ng'])
       StatusBar.styleDefault();
     }
   });
-})
+});

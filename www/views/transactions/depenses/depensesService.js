@@ -1,5 +1,5 @@
 angular.module('App')
-.service('DepensesService',function($http){
+  .service('DepensesService',function($http){
 
   //var urlServer = "http://192.168.56.1:1949";
     var urlServer = "http://localhost:1949/";
@@ -48,6 +48,10 @@ angular.module('App')
     return $http.post(urlServer+"/api/Transaction/addTransaction",depense);
   };
 
+  var getTotalDepense = function(userId){
+    return $http.get(urlServer+"/api/Transaction/getTotalDepenses/"+userId);
+  }
+
   return {
     depenses: [],
     getAnInstance : getAnInstanceOfDepense,
@@ -55,7 +59,8 @@ angular.module('App')
     getDepenseOneUser : getDepenseOneUser,
     updateDepense: updateDepense,
     deleteById: deleteById,
-    addDepense: addDepense
+    addDepense: addDepense,
+    getTotalDepense : getTotalDepense
   };
 
 

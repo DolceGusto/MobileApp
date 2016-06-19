@@ -46,6 +46,10 @@ angular.module('App')
       return $http.post(urlServer+"/api/Transaction/addTransaction",entree);
     };
 
+    var getTotalEntree = function(userId){
+      return $http.get(urlServer+"/api/Transaction/getTotalRevenus/"+userId);
+    };
+
     return {
       entrees: [],
       getAnInstance : getAnInstanceOfEntree,
@@ -53,7 +57,8 @@ angular.module('App')
       getEntreesOneUser: getEntreesOneUser,
       updateEntree: updateEntree,
       deleteById: deleteById,
-      addEntree: addEntree
+      addEntree: addEntree,
+      getTotalEntree: getTotalEntree
     };
 
 

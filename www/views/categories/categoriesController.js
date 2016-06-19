@@ -1,7 +1,7 @@
 angular.module('App')
-.controller('CategoriesController',function($scope,$ionicPopup,CategoriesService){
+.controller('CategoriesController',function($scope,$ionicPopup,CategoriesService,loginService){
 
-  var porteFeuilleId = 1 ;
+  var porteFeuilleId = loginService.currentAppUser.idPorteFeuille ;
 
   console.log("entré dans categorie controller ");
 

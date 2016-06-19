@@ -1,8 +1,8 @@
 angular.module('App')
-.controller('ComptesController',function($scope,ComptesService,$ionicPopup){
+.controller('ComptesController',function($scope,ComptesService,$ionicPopup,loginService){
 
 
-  var userId = 2 ;
+  var userId = loginService.currentAppUser.id;
 
   ComptesService.getCompteOneUser(userId)
     .success(function(comptes){

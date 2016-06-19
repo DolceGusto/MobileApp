@@ -1,5 +1,21 @@
 <ion-view view-title="Profile">
   <ion-content>
 
+    <div class="list card">
+
+      <div class="item item-avatar">
+
+        <img src="{{pictureUrl}}">
+        <h2>{{first_name}} {{last_name}} </h2>
+        <h3>{{email}} </h3>
+
+      </div>
+
+      <div class="item item-body">
+        <p>Total depenses {{totalDepenses | number:2}} DA</p>
+        <p>Total Revenus  {{totalRevenus | number: 2 }} DA</p>
+      </div>
+
+    </div>
   </ion-content>
 </ion-view>

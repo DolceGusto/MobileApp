@@ -1,8 +1,8 @@
 angular.module('App')
-  .controller('EntreesController',function($scope,$ionicPopup,EntreesService,CategoriesService,ComptesService){
+  .controller('EntreesController',function($scope,$ionicPopup,EntreesService,CategoriesService,ComptesService,loginService){
 
-    var userId = 2;
-    var porteFeuilleId = 1;
+    var userId = loginService.currentAppUser.id;
+    var porteFeuilleId = loginService.currentAppUser.idPorteFeuille;
 
 
     EntreesService.getEntreesOneUser(userId)

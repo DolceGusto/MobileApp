@@ -1,8 +1,8 @@
 angular.module('App')
-.controller('StatController',function($scope,StatService,DepensesService,EntreesService){
+.controller('StatController',function($scope,StatService,DepensesService,EntreesService,loginService){
 
 
-    var userId = 2;
+    var userId = loginService.currentAppUser.id;
 
     var getDataFromBackend = function (userId){
 
@@ -110,8 +110,7 @@ angular.module('App')
 
 
     getDataFromBackend(userId);
-
-
+  
     $scope.$watch('selectedChart.nom',function(newVal,oldVal){
 
         $scope.changeChart(newVal);
